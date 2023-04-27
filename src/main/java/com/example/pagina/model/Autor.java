@@ -4,7 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-@Table("Autor")
+@Table("AUTOR")
 public class Autor {
 
     @Id
@@ -13,13 +13,13 @@ public class Autor {
     private String name;
     @Column("PHONE")
     private String phone;
-    @Column("MAIL")
-    private String mail;
+    @Column("EMAIL")
+    private String email;
 
-    public Autor(String name, String phone, String mail){
+    public Autor(String name, String phone, String email){
         this.phone= phone;
         this.name = name;
-        this.mail=mail;
+        this.email=email;
     }
 
     public String getName(){
@@ -28,7 +28,7 @@ public class Autor {
     public String getPhone(){
         return phone;
     }
-    public String getMail(){
-        return mail;
+    public String getEmail(){
+        return email;
     }
 }

@@ -1,5 +1,7 @@
 package com.example.pagina.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +22,8 @@ public class AutorService {
         this.autorRepository = autorRepository;
     }
 
-    public Autor getUserInfo(Integer userId) {
-        return autorRepository.findById(userId).get();
+    public Optional<Autor> getUserInfo(Integer userId) {
+        return autorRepository.findById(userId);
     }
 
     public Autor addUser(Autor user) {
@@ -43,7 +45,7 @@ public class AutorService {
         if (user.getName() == null) {
             throw new IllegalArgumentException("Name is required");
         }
-        if (user.getMail() == null) {
+        if (user.getEmail() == null) {
             throw new IllegalArgumentException("Email is required");
         }
         if (user.getPhone() == null) {
@@ -51,7 +53,7 @@ public class AutorService {
         }
 
         // check that email is valid with regex
-        String email = user.getMail();
+        String email = user.getEmail();
         if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
             throw new IllegalArgumentException("Email is invalid");
         }
