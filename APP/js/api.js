@@ -36,7 +36,6 @@ function handleFormSubmit() {
                 alert(error);
             } else {
                 alert('Message sent successfully');
-                // navigate to home page
                 window.location.href = './index.html';
 
             }

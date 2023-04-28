@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,16 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.pagina.model.Autor;
 import com.example.pagina.service.AutorService;
 
-// import org.slf4j.LoggerFactory;
-// import ch.qos.logback.classic.Logger;
 
 @RestController
 public class AutorController {
 
     private AutorService autorService;
-
-    // private static final Logger logger = (Logger)
-    // LoggerFactory.getLogger(AutorController.class);
 
     public AutorController(AutorService autorService) {
         this.autorService = autorService;
@@ -88,6 +84,24 @@ public class AutorController {
             HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
             String message = "Unexpected error";
             String path = "/autor/update/" + userID;
+
+            return ResponseEntity.status(status)
+                    .body(createErrorResponse(status, message, path));
+        }
+    }
+
+    @DeleteMapping("/autor/{userID}")
+    @CrossOrigin(origins = "*")
+    public ResponseEntity<Object> deleteUser(@PathVariable("userID") Integer userID) {
+        try {
+            autorService.deleteUser(userID);
+            return ResponseEntity.status(HttpStatus.OK).body("Autor deleted successfully");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (RuntimeException e) {
+            HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+            String message = "Unexpected error";
+            String path = "/autor/" + userID;
 
             return ResponseEntity.status(status)
                     .body(createErrorResponse(status, message, path));

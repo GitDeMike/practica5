@@ -55,6 +55,15 @@ public class AutorService {
         }
     }
 
+    @Transactional
+    public void deleteUser(Integer userId) {
+        Optional<Autor> existingUser = autorRepository.findById(userId);
+        if (existingUser.isPresent()) {
+            autorRepository.delete(existingUser.get());
+        } else {
+            throw new IllegalArgumentException("User not found");
+        }
+    }
 
     public void checkIfPayloadIsValid(Autor user) {
         if (user == null) {
@@ -70,10 +79,10 @@ public class AutorService {
             throw new IllegalArgumentException("Phone is required");
         }
 
-        // check that email is valid with regex
         String email = user.getEmail();
         if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
             throw new IllegalArgumentException("Email is invalid");
         }
     }
+
 }

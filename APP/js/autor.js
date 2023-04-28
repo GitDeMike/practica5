@@ -84,6 +84,39 @@ function showMessage(message, type) {
 }
 
 
+async function deleteAuthor(id) {
+    try {
+        const response = await fetch(baseUrl + id, {
+            method: 'DELETE',
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(errorText);
+        }
+        return true;
+    } catch (error) {
+        alert(error.message);
+    }
+    return false;
+}
+
+function handleDeleteButtonClick() {
+    const id = document.getElementById('infoID').innerText;
+
+    deleteAuthor(id)
+        .then((deleted) => {
+            if (deleted) {
+                document.getElementById('autorInfo').style.display = 'none';
+                showMessage('El autor ha sido eliminado correctamente.', 'success');
+            }
+        })
+        .catch((error) => {
+            showMessage('No se pudo eliminar el autor. Por favor, inténtelo de nuevo.', 'error');
+        });
+}
+
+
 function main() {
     const searchButton = document.getElementById('searchButton');
     searchButton.addEventListener('click', async () => {
@@ -97,6 +130,8 @@ function main() {
     });
     const updateButton = document.getElementById('updateButton');
     updateButton.addEventListener('click', handleUpdateButtonClick);
+    const deleteButton = document.getElementById('deleteButton');
+    deleteButton.addEventListener('click', handleDeleteButtonClick);
 }
 
 
