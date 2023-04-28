@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.pagina.Repository.AutorRepository;
 import com.example.pagina.model.Autor;
@@ -34,6 +35,23 @@ public class AutorService {
             return user;
         } catch (Exception e) {
             throw e;
+        }
+    }
+
+    @Transactional
+    public Autor updateUser(Integer userId, Autor user) {
+        checkIfPayloadIsValid(user);
+
+        Optional<Autor> existingUser = autorRepository.findById(userId);
+        if (existingUser.isPresent()) {
+            Autor updatedUser = existingUser.get();
+            updatedUser.setName(user.getName());
+            updatedUser.setEmail(user.getEmail());
+            updatedUser.setPhone(user.getPhone());
+            autorRepository.save(updatedUser);
+            return updatedUser;
+        } else {
+            throw new IllegalArgumentException("User not found");
         }
     }
 

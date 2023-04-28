@@ -1,6 +1,5 @@
 package com.example.pagina.controller;
 
-
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,13 +25,14 @@ public class AutorController {
 
     private AutorService autorService;
 
-    // private static final Logger logger = (Logger) LoggerFactory.getLogger(AutorController.class);
+    // private static final Logger logger = (Logger)
+    // LoggerFactory.getLogger(AutorController.class);
 
     public AutorController(AutorService autorService) {
         this.autorService = autorService;
     }
 
-    @GetMapping("/contacto/{userID}")
+    @GetMapping("/autor/{userID}")
     @CrossOrigin(origins = "*")
     public ResponseEntity<Object> getUserInfo(@PathVariable("userID") Integer userID) {
         Optional<Autor> autor = autorService.getUserInfo(userID);
@@ -58,17 +58,40 @@ public class AutorController {
         return errorResponse;
     }
 
-
-
-    @PostMapping("/contacto")
+    @PostMapping("/autor")
     @CrossOrigin(origins = "*")
-    public ResponseEntity<Object> addUser(@RequestBody Autor autor){
-        try{
-            Autor retured_autor = autorService.addUser(autor);
-            return ResponseEntity.ok(retured_autor);
-        }
-        catch(Exception e){
+    public ResponseEntity<Object> addUser(@RequestBody Autor autor) {
+        try {
+            Autor returnedAutor = autorService.addUser(autor);
+            return ResponseEntity.ok(returnedAutor);
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (RuntimeException e) {
+            HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+            String message = "Unexpected error";
+            String path = "/autor";
+
+            return ResponseEntity.status(status)
+                    .body(createErrorResponse(status, message, path));
         }
     }
+
+    @PostMapping("/autor/update/{userID}")
+    @CrossOrigin(origins = "*")
+    public ResponseEntity<Object> updateUserInfo(@PathVariable("userID") Integer userID, @RequestBody Autor user) {
+        try {
+            Autor updatedUser = autorService.updateUser(userID, user);
+            return ResponseEntity.ok(updatedUser);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (RuntimeException e) {
+            HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+            String message = "Unexpected error";
+            String path = "/autor/update/" + userID;
+
+            return ResponseEntity.status(status)
+                    .body(createErrorResponse(status, message, path));
+        }
+    }
+
 }

@@ -1,4 +1,4 @@
-var url = "http://localhost:8080/contacto";
+var url = "http://localhost:8080/autor";
 
 async function postContactMessage(name, email, phone) {
     try {

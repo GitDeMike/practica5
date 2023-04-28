@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Información del autor</title>
+</head>
+<body>
+    <h2>Buscar autor por ID</h2>
+    <p>Introduzca el ID de un usuario para ver y editar su información</p>
+
+    <div>
+        <label for="autorID">ID del autor:</label>
+        <input type="text" id="autorID">
+        <button id="searchButton">Buscar</button>
+    </div>
+
+    <div id="autorInfo" style="display:none;">
+        <h3>Información del autor</h3>
+        <p>ID: <span id="infoID"></span></p>
+        <p>Nombre: <input id="editName" type="text"></p>
+        <p>Correo electrónico: <input id="editEmail" type="email"></p>
+        <p>Teléfono: <input id="editPhone" type="tel" pattern="[0-9()+-]*"></p>
+        <button id="updateButton">Modificar</button>
+    </div>
+    
+    <div id="updateMessage" style="display:none;"></div>
+
+    <script src="../js/autor.js"></script>
+</body>
+</html>
